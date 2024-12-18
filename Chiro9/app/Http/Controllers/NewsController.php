@@ -22,11 +22,6 @@ class NewsController extends Controller
         return view('news.show', compact('news'));
     }
 
-    // Toon het formulier om nieuws aan te maken
-    public function create()
-    {
-        return view('news.create');
-    }
 
     // Bewaar een nieuw nieuwsitem
     public function store(Request $request)
@@ -46,7 +41,7 @@ class NewsController extends Controller
 
         News::create($validated);
 
-        return redirect()->route('news.index')->with('success', 'Nieuwsitem aangemaakt!');
+        return redirect()->route('admin.news')->with('success', 'Nieuwsitem aangemaakt!');
     }
 
     // Toon het bewerkformulier
@@ -76,7 +71,7 @@ class NewsController extends Controller
 
         $news->update($validated);
 
-        return redirect()->route('news.index')->with('success', 'Nieuwsitem bijgewerkt!');
+        return redirect()->route('admin.news')->with('success', 'Nieuwsitem bijgewerkt!');
     }
 
     // Verwijder een nieuwsitem
@@ -88,6 +83,6 @@ class NewsController extends Controller
 
         $news->delete();
 
-        return redirect()->route('news.index')->with('success', 'Nieuwsitem verwijderd!');
+        return redirect()->route('admin.news')->with('success', 'Nieuwsitem verwijderd!');
     }
 }

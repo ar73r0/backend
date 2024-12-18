@@ -77,5 +77,11 @@
             @yield('content')
         </main>
     </div>
+
+    
+    
+    <footer>
+        &copy; {{ date('Y') }} Chiro9. Alle rechten voorbehouden.
+    </footer>
 </body>
 </html>

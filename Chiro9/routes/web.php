@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
 
 // Route voor logout
 Route::post('/logout', function () {
@@ -20,11 +22,14 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'showUsers'])->name('admin.dashboard');
-    Route::post('/admin/dashboard/{id}/make-admin', [AdminController::class, 'makeAdmin'])->name('admin.makeAdmin');
-    Route::post('/admin/dashboard/{id}/remove-admin', [AdminController::class, 'removeAdmin'])->name('admin.removeAdmin');
-    Route::post('/admin/dashboard/create', [AdminController::class, 'createUser'])->name('admin.createUser');
-    Route::post('/admin/dashboard/{id}/delete', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
+    
+    Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
+
+    Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users');
+    
+    Route::get('/admin/news', [AdminController::class, 'showNews'])->name('admin.news');
+
+    Route::get('/admin/contact', [AdminController::class, 'showContactForms'])->name('admin.contact');
 });
 
 
@@ -32,6 +37,12 @@ Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])-
 Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/edit', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
+    Route::post('admin/users/{id}/make-admin', [UserController::class, 'makeAdmin'])->name('users.makeAdmin');
+    Route::post('admin/users/{id}/remove-admin', [UserController::class, 'removeAdmin'])->name('users.removeAdmin');
+    Route::post('admin/users/create', [UserController::class, 'createUser'])->name('users.createUser');
+    Route::post('admin/users/delete/{id}', [UserController::class, 'deleteUser'])->name('users.deleteUser');
+});
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
@@ -41,13 +52,17 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
 });
 
+
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
 Route::get('/contact', function () {
-    return view('contact');
+    return view('contact/form');
 })->name('contact');
+
+Route::get('/contact/form', [ContactController::class, 'showForm']);
+Route::post('/contact', [ContactController::class, 'submitForm']);
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
