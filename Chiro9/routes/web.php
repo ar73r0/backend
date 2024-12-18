@@ -41,6 +41,14 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
 });
 
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 
