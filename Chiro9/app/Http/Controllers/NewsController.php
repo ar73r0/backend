@@ -45,31 +45,33 @@ class NewsController extends Controller
     }
 
     // Toon het bewerkformulier
-    public function edit(News $news)
+    public function edit($id)
     {
-        return view('news.edit', compact('news'));
+        $newsItem = News::findOrFail($id);
+        return view('news.edit', compact('newsItem'));
     }
 
     // Update een nieuwsitem
-    public function update(Request $request, News $news)
+    public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'published_at' => 'required|date',
         ]);
 
+        
+        $newsItem = News::findOrFail($id);
+
+        $newsItem->title = $request->input('title');
+        $newsItem->content = $request->input('content');
         // Afbeelding bijwerken
         if ($request->hasFile('image')) {
-            if ($news->image) {
-                Storage::disk('public')->delete($news->image);
-            }
             $path = $request->file('image')->store('news_images', 'public');
-            $validated['image'] = $path;
+            $newsItem->image = $path;
         }
 
-        $news->update($validated);
+        $newsItem->save();
 
         return redirect()->route('admin.news')->with('success', 'Nieuwsitem bijgewerkt!');
     }

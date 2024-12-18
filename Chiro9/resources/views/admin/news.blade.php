@@ -49,7 +49,12 @@
             <td>{{ $news->title }}</td>
             <td>{{ $news->published_at }}</td>
             <td>
-                <!-- Verwijderen knop -->
+            
+                <form action="{{ route('news.edit', $news->id) }}" method="PUT" style="display:inline;">
+                    @csrf
+                    @method('UPDATE')
+                    <button type="submit" class="btn btn-danger btn-sm">Veranderen</button>
+                </form>
                 <form action="{{ route('news.destroy', $news->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE') <!-- DELETE-methode voor verwijderen -->
