@@ -30,6 +30,8 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::get('/admin/news', [AdminController::class, 'showNews'])->name('admin.news');
 
     Route::get('/admin/contact', [AdminController::class, 'showContactForms'])->name('admin.contact');
+    
+    Route::post('admin/contacts/{contact}/reply', [ContactController::class, 'reply'])->name('admin.contacts.reply');
 });
 
 

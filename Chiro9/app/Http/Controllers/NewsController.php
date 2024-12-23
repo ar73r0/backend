@@ -71,7 +71,7 @@ class NewsController extends Controller
             $newsItem->image = $path;
         }
 
-        $newsItem->save();
+        $newsItem->save();      
 
         return redirect()->route('admin.news')->with('success', 'Nieuwsitem bijgewerkt!');
     }

@@ -33,4 +33,16 @@ class ContactController extends Controller
 
         return back()->with('success', 'Je bericht is verzonden!');
     }
+
+    public function reply(Request $request, Contact $contact)
+    {
+        $request->validate([
+            'reply' => 'required|string',
+        ]);
+
+        $contact->reply = $request->input('reply');
+        $contact->save();
+
+        return redirect()->route('admin.contacts')->with('success', 'Bericht beantwoord.');
+    }
 }
