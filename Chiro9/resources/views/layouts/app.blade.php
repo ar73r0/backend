@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ session('dark_mode', false) ? 'dark' : '' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,12 +23,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}">Home Page</a>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
+                    
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
@@ -54,7 +49,13 @@
 
                                     <a class="dropdown-item" href="{{ route('profile.show') }}">
                                         {{ __('Profile') }}
-                                    </a>    
+                                    </a>
+                                    
+                                        @if (auth()->check() && auth()->user()->isAdmin)
+                                            <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                                            Admin
+                                            </a>
+                                        @endif  
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -76,12 +77,12 @@
         <main class="py-4">
             @yield('content')
         </main>
-    </div>
-
-    
     
     <footer>
         &copy; {{ date('Y') }} Chiro9. Alle rechten voorbehouden.
     </footer>
+    </div>
+
+    
 </body>
 </html>

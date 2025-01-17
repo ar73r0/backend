@@ -8,13 +8,26 @@
 
     <form action="{{ url('/contact') }}" method="POST">
     @csrf
-        <div class="mb-3">
+    <div class="mb-3">
             <label for="name" class="form-label">Naam</label>
-            <input type="text" name="name" class="form-control" id="name" required>
+            <input class="form-control"
+                type="text" 
+                id="name" 
+                name="name" 
+                value="{{ Auth::check() ? Auth::user()->name : old('name') }}" 
+                required
+            >
         </div>
+
         <div class="mb-3">
-            <label for="email" class="form-label">E-mail</label>
-            <input type="email" name="email" class="form-control" id="email" required>
+            <label for="email" class="form-label">Email</label>
+            <input class="form-control"
+                type="email" 
+                id="email" 
+                name="email" 
+                value="{{ Auth::check() ? Auth::user()->email : old('email') }}" 
+                required
+            >
         </div>
         <div class="mb-3">
             <label for="message" class="form-label">Bericht</label>

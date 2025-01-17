@@ -10,7 +10,7 @@ use App\Http\Controllers\ContactController;
 // Route voor logout
 Route::post('/logout', function () {
     Auth::logout();
-    return redirect('/'); // Na logout terug naar de homepagina
+    return redirect('/'); 
 })->name('logout');
 
 
@@ -19,7 +19,6 @@ Route::get('/', [App\Http\Controllers\Controller::class, 'index'])->name('welcom
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     
@@ -71,5 +70,19 @@ Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 
 
 
+Route::post('/toggle-dark-mode', function () {
+    $darkMode = session('dark_mode', false);
+    session(['dark_mode' => !$darkMode]); // Toggle the dark mode preference
+    return response()->json(['dark_mode' => !$darkMode]);
+})->name('toggle-dark-mode');
 
-
+Route::post('/toggle-dark-mode', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        $user->dark_mode = !$user->dark_mode;
+        $user->save();
+    } else {
+        session(['dark_mode' => !session('dark_mode', false)]);
+    }
+    return response()->json(['dark_mode' => Auth::check() ? Auth::user()->dark_mode : session('dark_mode')]);
+})->name('toggle-dark-mode');

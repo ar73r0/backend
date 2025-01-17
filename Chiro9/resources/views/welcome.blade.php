@@ -1,35 +1,43 @@
 
 @extends('layouts.app')
 @section('content')
-                
-    @if (Route::has('login'))
-        <nav class="-mx-3 flex flex-1 justify-end">
-            @auth
-                @if (auth()->check() && auth()->user()->isAdmin)
-                    <a
-                        href="{{ route('admin.dashboard') }}"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                    >
-                    Admin Dashboard
-                    </a>
-                @endif
-                <a
-                    href="{{ route('home') }}"
-                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                >
-                    Dashboard
-                </a>    
-            @endauth
-        </nav>
-    @endif
+
     
 
     
-    <div class="container mt-5">
+    <div class="container mt-5" >
         <div class="text-center">
             <h1>Welkom bij Chiro9</h1>
-            <p class="lead">Ontdek het laatste nieuws, krijg antwoorden op veelgestelde vragen, of neem contact met ons op!</p>
         </div>
+
+        @auth
+            @if (auth()->check() && auth()->user())
+            <div class="row mt-4">
+            <div class="container">
+    <h1>Tent Overview</h1>
+    <div class="row">
+        @foreach ($tents as $tent)
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    @if ($tent->image)
+                        <img src="{{ asset('storage/' . $tent->image) }}" class="card-img-top" alt="{{ $tent->name }}">
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $tent->name }}</h5>
+                        <p class="card-text">{{ Str::limit($tent->description, 100) }}</p>
+                        <p><strong>Capacity:</strong> {{ $tent->capacity }} people</p>
+                        <p><strong>Price:</strong> €{{ $tent->price }}</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    {{ $tents->links() }} <!-- Pagination links -->
+</div>
+            </div>
+            @endif  
+        @endauth
 
         <div class="row mt-4">
             <div class="col-md-4">

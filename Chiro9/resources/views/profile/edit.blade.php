@@ -24,6 +24,12 @@
                 <input type="text" class="form-control" name="name" value="{{ old('name', auth()->user()->name) }}" required>
             </div>
 
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" value="{{ old('username', auth()->user()->username) }}">
+            </div>
+
             <!-- E-mail -->
             <div class="mb-3">
                 <label for="email" class="form-label">E-mail</label>
@@ -40,12 +46,6 @@
             <div class="mb-3">
                 <label for="password_confirmation" class="form-label">Bevestig Wachtwoord</label>
                 <input type="password" class="form-control" name="password_confirmation" placeholder="Laat beide wachtwoord-velden leeg om niet te wijzigen">
-            </div>
-
-            <!-- Username -->
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" name="username" value="{{ old('username', auth()->user()->username) }}">
             </div>
 
             <!-- Verjaardag -->
